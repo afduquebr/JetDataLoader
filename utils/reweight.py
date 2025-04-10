@@ -2,14 +2,31 @@ import tables
 import numpy as np
 import glob
 import os
+from sklearn.neighbors import KernelDensity
 import hep_ml.reweight as reweight
 
-def match_weights(pt, target, n_bins=200):
+
+def match_weights(source, target, n_bins=400):
     """ Calculate weights to match pt distribution to the target distribution. """
-    reweighter = reweight.BinsReweighter(n_bins=n_bins)
-    reweighter.fit(pt, target=target)
-    weights = reweighter.predict_weights(pt)
+    source_log = np.log10(source.clip(min=1e-3))
+    target_log = np.log10(target.clip(min=1e-3))
+    reweighter = reweight.BinsReweighter(n_bins=n_bins, n_neighs=2.0)
+    reweighter.fit(original=source_log.reshape(-1, 1), target=target_log.reshape(-1, 1))
+    weights = reweighter.predict_weights(source_log.reshape(-1, 1))
     return weights / weights.mean()  # Normalize weights
+
+def kde_smooth_weights(source, target, bandwidth=0.2):
+    source = source.reshape(-1, 1)
+    target = target.reshape(-1, 1)
+
+    kde_source = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(source)
+    kde_target = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(target)
+
+    log_source_density = kde_source.score_samples(source)
+    log_target_density = kde_target.score_samples(source)  # Note: evaluate target at source points
+
+    weights = np.exp(log_target_density - log_source_density)
+    return weights / np.mean(weights)  # Normalize weights
 
 def process_h5_file(h5_file, data_source, dataset_weights=None, weight_start=0):
     """ Create or append datasets in an HDF5 file. """
@@ -37,25 +54,26 @@ def process_h5_file(h5_file, data_source, dataset_weights=None, weight_start=0):
 
 def process_files(file_dir, sig_tag, bkg_tag):
     """ Process signal and background HDF5 files, reweight, and save. """
-    out_dir = "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_train"
+    out_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_train_new_reweight2"
     
     print(f"Processing files from bkgs: {bkg_tag} and sigs: {sig_tag}")
 
-    sig_files = [tables.open_file(f, mode="r") for f in glob.glob(f"{file_dir}{sig_tag}*.h5")]
-    bkg_files = [tables.open_file(f, mode="r") for f in glob.glob(f"{file_dir}{bkg_tag}*.h5")]
+    sig_files = [tables.open_file(f, mode="r") for f in glob.glob(f"{file_dir}/{sig_tag}*.h5")]
+    bkg_files = [tables.open_file(f, mode="r") for f in glob.glob(f"{file_dir}/{bkg_tag}*.h5")]
 
     # Process training data for reweighting
     print("Computing reweighting factors...")
     train_sig_pt, train_bkg_pt = [], []
     
-    for sig_f, bkg_f, sig in zip(sig_files, bkg_files, glob.glob(f"{file_dir}{sig_tag}*.h5")):
+    for sig_f, bkg_f, sig in zip(sig_files, bkg_files, glob.glob(f"{file_dir}/{sig_tag}*.h5")):
         if "train" in sig:
             train_sig_pt.append(sig_f.root["jet_pt"][:])
             train_bkg_pt.append(bkg_f.root["jet_pt"][:])
 
     train_sig_pt = np.concatenate(train_sig_pt)
     train_bkg_pt = np.concatenate(train_bkg_pt)
-    bkg_weights = match_weights(train_bkg_pt, train_sig_pt)
+    bkg_weights = kde_smooth_weights(train_bkg_pt, train_sig_pt)
+    # bkg_weights = match_weights(train_bkg_pt, train_sig_pt)
 
     # Process background files
     print("Reweighting and saving background files...")
@@ -63,7 +81,7 @@ def process_files(file_dir, sig_tag, bkg_tag):
     test_bkg_file = tables.open_file(f"{out_dir}/test_files/test_{bkg_tag}.h5", mode="w")
 
     weight_idx = 0
-    for bkg_f, bkg_name in zip(bkg_files, glob.glob(f"{file_dir}{bkg_tag}*.h5")):
+    for bkg_f, bkg_name in zip(bkg_files, glob.glob(f"{file_dir}/{bkg_tag}*.h5")):
         if "train" in bkg_name:
             weight_idx = process_h5_file(train_bkg_file, bkg_f, dataset_weights=bkg_weights, weight_start=weight_idx)
         else:
@@ -86,7 +104,7 @@ def process_files(file_dir, sig_tag, bkg_tag):
     train_sig_file = tables.open_file(train_sig_path, mode="w")
     test_sig_file = tables.open_file(test_sig_path, mode="w")
 
-    for sig_f, sig_name in zip(sig_files, glob.glob(f"{file_dir}{sig_tag}*.h5")):
+    for sig_f, sig_name in zip(sig_files, glob.glob(f"{file_dir}/{sig_tag}*.h5")):
         if "train" in sig_name:
             process_h5_file(train_sig_file, sig_f)
         else:
@@ -99,8 +117,7 @@ def process_files(file_dir, sig_tag, bkg_tag):
 
 
 if __name__ == "__main__":    
-    input_dir = "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_out/"
+    input_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_out"
     process_files(input_dir, "higgs", "QCD")
     process_files(input_dir, "higgs", "top")
-    process_files(input_dir, "higgs", "W")
-    process_files(input_dir, "higgs", "Z")
+    process_files(input_dir, "higgs", "WZ")
