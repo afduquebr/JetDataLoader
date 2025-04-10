@@ -1,0 +1,140 @@
+{
+    "config_W": {
+        "out_file_dir": "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_out/",
+        "pickle_dict_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/jet_count_dict_5.pickle",
+        "max_constits": 80,
+        "max_jets": 6000000,
+        "num_outputs": 50,
+        "num_test": 5,
+        "R22TruthLabelValues": [2],
+        "signal": true,
+        "labels": {
+            "label_QCD": 0,
+            "label_W": 1,
+            "label_Z": 0,
+            "label_top": 0,
+            "label_higgs": 0
+        },
+        "branches_to_keep": [
+            "fjet_clus_E", "fjet_clus_pt", "fjet_clus_phi", "fjet_clus_eta", 
+            "fjet_clus_deltaphi", "fjet_clus_deltaeta", "fjet_pt", "jet_pt", 
+            "jet_energy", "R10TruthLabel_R22v1", "fjet_testing_weight_pt", "weight", 
+            "fjet_clus_d0", "fjet_clus_z0", "fjet_clus_d0_uncertainty", "fjet_clus_z0_uncertainty", 
+            "label_QCD", "label_W", "label_Z", "label_top", "label_higgs"
+        ],
+        "out_file_tag": "W",
+        "metadata_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/metadata.json",
+        "in_file": ["/AtlasDisk/data1/jet_tagging/june/user.rles.801859.*/*.h5"]
+    },
+    "config_Z": {
+        "out_file_dir": "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_out/",
+        "pickle_dict_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/jet_count_dict_5.pickle",
+        "branches_to_keep": [
+            "fjet_clus_E", "fjet_clus_pt", "fjet_clus_phi", "fjet_clus_eta", 
+            "fjet_clus_deltaphi", "fjet_clus_deltaeta", "fjet_pt", "jet_pt", 
+            "jet_energy", "R10TruthLabel_R22v1", "fjet_testing_weight_pt", "weight", 
+            "fjet_clus_d0", "fjet_clus_z0", "fjet_clus_d0_uncertainty", "fjet_clus_z0_uncertainty", 
+            "label_QCD", "label_W", "label_Z", "label_top", "label_higgs"
+        ],
+        "max_constits": 80,
+        "max_jets": 6000000,
+        "num_outputs": 50,
+        "num_test": 5,
+        "metadata_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/metadata.json",
+        "R22TruthLabelValues": [3, 4, 5],
+        "signal": true,
+        "labels": {
+            "label_QCD": 0,
+            "label_W": 0,
+            "label_Z": 1,
+            "label_top": 0,
+            "label_higgs": 0
+        },
+        "out_file_tag": "Z",
+        "in_file": ["/AtlasDisk/data1/jet_tagging/june/user.rles.801859.*/*.h5"]
+    },
+    "higgs": {
+        "out_file_dir": "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_out/",
+        "pickle_dict_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/jet_count_dict_5.pickle",
+        "branches_to_keep": [
+            "fjet_clus_E", "fjet_clus_pt", "fjet_clus_phi", "fjet_clus_eta", 
+            "fjet_clus_deltaphi", "fjet_clus_deltaeta", "fjet_pt", "jet_pt", 
+            "jet_energy", "R10TruthLabel_R22v1", "fjet_testing_weight_pt", "weight", 
+            "fjet_clus_d0", "fjet_clus_z0", "fjet_clus_d0_uncertainty", "fjet_clus_z0_uncertainty", 
+            "label_QCD", "label_W", "label_Z", "label_top", "label_higgs"
+        ],
+        "max_constits": 80,
+        "max_jets": 6000000,
+        "num_outputs": 50,
+        "num_test": 5,
+        "metadata_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/metadata.json",
+        "R22TruthLabelValues": [11],
+        "signal": true,
+        "labels": {
+            "label_QCD": 0,
+            "label_W": 0,
+            "label_Z": 0,
+            "label_top": 0,
+            "label_higgs": 1
+        },
+        "out_file_tag": "higgs",
+        "in_file": ["/AtlasDisk/data1/jet_tagging/june/user.rles.426351*/user.rles.*.output.h5"]
+    },
+    "top": {
+        "out_file_dir": "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_out/",
+        "pickle_dict_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/jet_count_dict_5.pickle",
+        "branches_to_keep": [
+            "fjet_clus_E", "fjet_clus_pt", "fjet_clus_phi", "fjet_clus_eta", 
+            "fjet_clus_deltaphi", "fjet_clus_deltaeta", "fjet_pt", "jet_pt", 
+            "jet_energy", "R10TruthLabel_R22v1", "fjet_testing_weight_pt", "weight", 
+            "fjet_clus_d0", "fjet_clus_z0", "fjet_clus_d0_uncertainty", "fjet_clus_z0_uncertainty", 
+            "label_QCD", "label_W", "label_Z", "label_top", "label_higgs"
+        ],
+        "max_constits": 80,
+        "max_jets": 6000000,
+        "num_outputs": 50,
+        "num_test": 5,
+        "metadata_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/metadata.json",
+        "R22TruthLabelValues": [1],
+        "signal": true,
+        "labels": {
+            "label_QCD": 0,
+            "label_W": 0,
+            "label_Z": 0,
+            "label_top": 1,
+            "label_higgs": 0
+        },
+        "out_file_tag": "top",
+        "in_file": ["/AtlasDisk/data1/jet_tagging/june/user.rles.801661*/user.rles.*.output.h5"]
+    },
+    "QCD": {
+        "out_file_dir": "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_out/",
+        "pickle_dict_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/jet_count_dict_5.pickle",
+        "branches_to_keep": [
+            "fjet_clus_E", "fjet_clus_pt", "fjet_clus_phi", "fjet_clus_eta", 
+            "fjet_clus_deltaphi", "fjet_clus_deltaeta", "fjet_pt", "jet_pt", 
+            "jet_energy", "R10TruthLabel_R22v1", "fjet_testing_weight_pt", "weight", 
+            "fjet_clus_d0", "fjet_clus_z0", "fjet_clus_d0_uncertainty", "fjet_clus_z0_uncertainty", 
+            "label_QCD", "label_W", "label_Z", "label_top", "label_higgs"
+        ],
+        "max_constits": 80,
+        "max_jets": 6000000,
+        "num_outputs": 50,
+        "num_test": 5,
+        "metadata_file": "/AtlasDisk/home2/duquebran/JetDataLoader/config/metadata.json",
+        "R22TruthLabelValues": [10],
+        "signal": true,
+        "labels": {
+            "label_QCD": 1,
+            "label_W": 0,
+            "label_Z": 0,
+            "label_top": 0,
+            "label_higgs": 0
+        },
+        "out_file_tag": "QCD",
+        "in_file": [
+            "/AtlasDisk/data1/jet_tagging/june/user.rles.36470[3-9].e7142_s3681_r13144_p5548.tdd.FatJetsFlow_jetm2.24_2_31.24-04-17_JetTagging-1-g079895f_output.h5/user.rles.*.output.h5",
+            "/AtlasDisk/data1/jet_tagging/june/user.rles.36471[0-2].e7142_s3681_r13144_p5548.tdd.FatJetsFlow_jetm2.24_2_31.24-04-17_JetTagging-1-g079895f_output.h5/user.rles.*.output.h5"
+        ]
+    }
+}
