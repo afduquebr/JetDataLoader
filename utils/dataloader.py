@@ -74,8 +74,8 @@ if __name__ == "__main__":
     # Example usage
     data_dir = "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_train/"
     data_config = yaml.safe_load(open('config/train_config.yaml', 'r'))
-    mode = 'train'
     batch_size = 1024
     num_workers = 1
 
-    dataloader = create_dataloader(data_dir, data_config, mode, batch_size, num_workers)
+    train_loader = create_dataloader(data_dir, data_config, "train", batch_size, num_workers)
+    test_loader = create_dataloader(data_dir, data_config, "test", batch_size, num_workers)
