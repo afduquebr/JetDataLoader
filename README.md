@@ -9,58 +9,6 @@
 
 ## Overview
 
-JetDataLoader is a modular framework for preprocessing, training, and evaluating deep learning models for jet classification in particle physics. It supports Particle Flow Networks (PFN), Particle Transformer (ParT), and ParticleNet architectures, providing flexibility for handling different models and training strategies. The repository is designed for clean workflows, from data preparation to final model evaluation and plotting. This package is intended to be used in conjunction with downstream tasks such as jet tagging or anomaly detection.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Data Download](#data-download)
-  - [Data Processing](#data-processing)
-- [Repository Structure](#repository-structure)
-
-## Installation
-
-### Prerequisites
-
-- Python 3.9 or higher
-- Git
-
-### Setup
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/afduquebr/JetDataLoader.git
-   cd JetDataLoader
-   ```
-
-2. **Create and activate virtual environment**:
-   ```bash
-   python3 -m venv .venv
-   source .venv/bin/activate
-   ```
-
-3. **Install Python dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## Usage
-
-Perfect, that makes things cleaner!  
-Based on your style from the autoencoder project, and your folder structure and notes, here’s a draft for your **JetDataLoader** README. I’ll keep the same tone, flow, and priorities (like the venv part), and include the `.h5` note you just mentioned.
-
----
-
-# JetDataLoader
-
-**Author:** Andrés Felipe Duque Bran
-
-***
-
-## Overview
-
 JetDataLoader is a modular framework for preprocessing, training, and evaluating deep learning models for jet classification in particle physics. It supports Particle Flow Networks (PFN), Particle Transformer (ParT), and ParticleNet architectures, providing flexibility for handling different models and training strategies. The repository is designed for clean workflows, from data preparation to final model evaluation and plotting.
 
 > ⚠️ Note: The framework only supports **HDF5 (.h5)** files for input data.
@@ -116,26 +64,26 @@ JetDataLoader is a modular framework for preprocessing, training, and evaluating
    
    Example:
    ```bash
-   python3 exec/preprocessing.py --config config/config.yaml
+   ./exec/preprocessing.sh
    ```
 
-   The `config.yaml` file controls variables used, metadata, and other preprocessing details.
+   The `skim.json` file controls variables kept, metadata employed, and other preprocessing details.
 
 ### Model Training and Evaluation
 
 1. **Training**:  
-   Use the training script to train PFN, ParT, or ParticleNet models. The model architecture is selected via the config file.
+   Use the training script to train PFN, ParT, or ParticleNet models. 
 
    Example:
    ```bash
-   ./exec/preprocessing.sh
+   ./exec/train.sh
    ```
 
 2. **Evaluation and Plotting**:
    After training, evaluate the model and generate plots with:
 
    ```bash
-   ./exec/train.sh
+   ./exec/eval.sh
    ```
 
    The output includes:
