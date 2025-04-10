@@ -52,9 +52,8 @@ def process_h5_file(h5_file, data_source, dataset_weights=None, weight_start=0):
 
     return weight_idx  # Return the updated weight index
 
-def process_files(file_dir, sig_tag, bkg_tag):
+def process_files(file_dir, out_dir, sig_tag, bkg_tag):
     """ Process signal and background HDF5 files, reweight, and save. """
-    out_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_train_new_reweight2"
     
     print(f"Processing files from bkgs: {bkg_tag} and sigs: {sig_tag}")
 
@@ -77,6 +76,9 @@ def process_files(file_dir, sig_tag, bkg_tag):
 
     # Process background files
     print("Reweighting and saving background files...")
+    os.makedirs(f"{out_dir}/train_files", exist_ok=True)
+    os.makedirs(f"{out_dir}/test_files", exist_ok=True)
+
     train_bkg_file = tables.open_file(f"{out_dir}/train_files/train_{bkg_tag}.h5", mode="w")
     test_bkg_file = tables.open_file(f"{out_dir}/test_files/test_{bkg_tag}.h5", mode="w")
 
@@ -118,6 +120,7 @@ def process_files(file_dir, sig_tag, bkg_tag):
 
 if __name__ == "__main__":    
     input_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_out"
-    process_files(input_dir, "higgs", "QCD")
-    process_files(input_dir, "higgs", "top")
-    process_files(input_dir, "higgs", "WZ")
+    output_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_train"
+    process_files(input_dir, output_dir, "higgs", "QCD")
+    process_files(input_dir, output_dir, "higgs", "top")
+    process_files(input_dir, output_dir, "higgs", "WZ")
