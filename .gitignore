@@ -7,11 +7,11 @@ __pycache__/
 
 # C extensions
 *.so
+*.pickle
 
 # Distribution / packaging
 .Python
 build/
-config/
 develop-eggs/
 dist/
 downloads/
