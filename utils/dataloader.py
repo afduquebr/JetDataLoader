@@ -72,10 +72,12 @@ def create_dataloader(data_dir, config, mode='train', batch_size=1024, num_worke
 
 if __name__ == "__main__":
     # Example usage
-    data_dir = "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_train/"
+    train_dir = "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_train/"
+    test_dir = "/AtlasDisk/user/duquebran/JetTagging/5-classes/data_test/"
     data_config = yaml.safe_load(open('config/train_config.yaml', 'r'))
     batch_size = 1024
     num_workers = 1
 
-    train_loader = create_dataloader(data_dir, data_config, "train", batch_size, num_workers)
-    test_loader = create_dataloader(data_dir, data_config, "test", batch_size, num_workers)
+    train_loader = create_dataloader(train_dir, data_config, "train", batch_size, num_workers)
+    test_loader = create_dataloader(test_dir, data_config, "test", batch_size, num_workers)
+
