@@ -72,8 +72,8 @@ def process_files(file_dir, sig_tag, bkg_tag):
 
     train_sig_pt = np.concatenate(train_sig_pt)
     train_bkg_pt = np.concatenate(train_bkg_pt)
-    bkg_weights = kde_smooth_weights(train_bkg_pt, train_sig_pt)
-    # bkg_weights = match_weights(train_bkg_pt, train_sig_pt)
+    # bkg_weights = kde_smooth_weights(train_bkg_pt, train_sig_pt)
+    bkg_weights = match_weights(train_bkg_pt, train_sig_pt)
 
     # Process background files
     print("Reweighting and saving background files...")
