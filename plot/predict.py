@@ -137,10 +137,10 @@ def plot(sample, model, labels):
             # Signal is the current class, background is everything else
             is_signal = (data[f"label_{label}"] == 1)[mask]
             scores = data[f"score_label_{label}"][mask]
-            weights = data["test_w"][mask]
+            # weights = data["weight"][mask]
 
             try:
-                fpr, tpr, _ = roc_curve(is_signal, scores, sample_weight=weights)
+                fpr, tpr, _ = roc_curve(is_signal, scores) #, sample_weight=weights)
                 rejection = 1.0 / (fpr + 1e-10)
                 rejection[np.isinf(rejection)] = 1e6  # Avoid infinities
 
@@ -209,10 +209,10 @@ def plot(sample, model, labels):
                 # Signal is the current class, background is everything else
                 is_signal = (data[f"label_{label}"] == 1)[mask]
                 scores = data[f"score_label_{label}"][mask]
-                weights = data["test_w"][mask]
+                # weights = data["weight"][mask]
 
                 try:
-                    fpr, tpr, _ = roc_curve(is_signal, scores, sample_weight=weights)
+                    fpr, tpr, _ = roc_curve(is_signal, scores) #, sample_weight=weights)
                     rejection = 1.0 / (fpr + 1e-10)
                     rejection[np.isinf(rejection)] = 1e6  # Avoid infinities
 
