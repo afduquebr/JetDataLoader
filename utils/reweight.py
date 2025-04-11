@@ -104,8 +104,8 @@ def process_files(file_dir, out_dir, sig_tag, bkg_tag):
 
 
 if __name__ == "__main__":    
-    input_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_out"
-    output_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_train_new_reweight_log"
+    input_dir = "/sps/atlas/a/aduque/JetTagging/4-classes/data_out"
+    output_dir = "/sps/atlas/a/aduque/JetTagging/4-classes/data_train_new_reweight_log"
     process_files(input_dir, output_dir, "higgs", "QCD")
     process_files(input_dir, output_dir, "higgs", "top")
     process_files(input_dir, output_dir, "higgs", "WZ")

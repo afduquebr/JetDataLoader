@@ -259,7 +259,7 @@ def run(config):
 if __name__ == "__main__":
     print("Running skim.py")
     # Load the skim configuration
-    JSON_file = "/AtlasDisk/home2/duquebran/JetDataLoader/config/skim_5.json"
+    JSON_file = "/pbs/home/a/aduque/private/JetDataLoader/config/skim_5.json"
     with open(JSON_file) as file:
         skim_config = json.load(file)
         for key in skim_config:

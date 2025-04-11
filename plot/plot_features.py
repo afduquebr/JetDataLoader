@@ -9,8 +9,8 @@ sns.set(style="whitegrid", context="talk", palette="muted")
 
 num_classes = 4
 
-input_path = f"/AtlasDisk/user/duquebran/JetTagging/{num_classes}-classes/data_train/train_5M.h5"
-output_path = f"/users/divers/atlas/duquebran/home2/JetDataLoader/figs/{num_classes}-classes/input_data/"
+input_path = f"/sps/atlas/a/aduque/JetTagging/{num_classes}-classes/data_train/train_5M.h5"
+output_path = f"/pbs/home/a/aduque/private/JetDataLoader/figs/{num_classes}-classes/input_data/"
 
 os.makedirs(output_path, exist_ok=True)
 

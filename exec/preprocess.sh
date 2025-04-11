@@ -1,21 +1,26 @@
 #!/bin/bash
-#PBS -o ./logs/preprocessing.$PBS_JOBID.txt
-#PBS -j oe
+#SBATCH -o ./logs/preprocess.%j.log    # Output file for both stdout and stderr
+#SBATCH --mem=128G                     # Memory allocation
+#SBATCH --time=96:00:00                # Walltime (96 hours)
+#SBATCH --ntasks=2                     # Number of tasks
+#SBATCH --cpus-per-task=2              # CPUs per task
+#SBATCH --job-name=preprocess          # Job name
+#SBATCH --partition=htc                # Partition name
+#SBATCH --account=atlas                # Account name
 
-# Source Conda environment
-source /atlas/tools/anaconda/anaconda3/etc/profile.d/conda.sh
 
-# Define the name of the Conda environment
-conda_env="/AtlasDisk/user/duquebran/conda/weaver"
+# Load Conda environment
+module add conda
 
-# Activate the Conda environment
-if ! conda activate $conda_env; then
+# Define and activate Conda environment
+conda_env="/sps/atlas/a/aduque/conda/weaver"
+if ! conda activate "$conda_env"; then
     echo "Error: Failed to activate Conda environment."
     exit 1
 fi
 
 # Go to directory
-cd /AtlasDisk/home2/duquebran/JetDataLoader/utils || exit
+cd /pbs/home/a/aduque/private/JetDataLoader/utils || exit
 
 # Run Python scripts
 if ! python skim.py; then

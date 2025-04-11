@@ -8,8 +8,8 @@ import os
 num_classes = 4
 
 # Path
-path = f"/AtlasDisk/user/duquebran/JetTagging/{num_classes}-classes/data_train"
-# path = f"/AtlasDisk/user/duquebran/JetTagging/{num_classes}-classes/data_train_new_reweight"
+path = f"/sps/atlas/a/aduque/JetTagging/{num_classes}-classes/data_train"
+# path = f"/sps/atlas/a/aduque/JetTagging/{num_classes}-classes/data_train_new_reweight"
 
 # Files
 input_files = [
@@ -19,7 +19,7 @@ input_files = [
     f"{path}/train_files/train_higgs.h5"
 ]
 
-output_path = f"/users/divers/atlas/duquebran/home2/JetDataLoader/figs/{num_classes}-classes/input_data/"
+output_path = f"/pbs/home/a/aduque/private/JetDataLoader/figs/{num_classes}-classes/input_data/"
 
 os.makedirs(output_path, exist_ok=True)
 

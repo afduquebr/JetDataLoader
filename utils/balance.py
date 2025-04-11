@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     num_classes = 4
 
-    path = f"/AtlasDisk/user/duquebran/JetTagging/{num_classes}-classes/data_train"
+    path = f"/sps/atlas/a/aduque/JetTagging/{num_classes}-classes/data_train"
 
     if num_classes == 4:
         labels = ['label_QCD', 'label_WZ', 'label_top', 'label_higgs']
