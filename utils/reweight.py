@@ -6,12 +6,13 @@ from sklearn.neighbors import KernelDensity
 import hep_ml.reweight as reweight
 
 
-def match_weights(source, target, n_bins=400):
+def match_weights(source, target, n_bins=1000):
     """ Calculate weights to match pt distribution to the target distribution. """
     source_log = np.log10(source.clip(min=1e-3))
     target_log = np.log10(target.clip(min=1e-3))
-    reweighter = reweight.BinsReweighter(n_bins=n_bins, n_neighs=2.0)
+    reweighter = reweight.BinsReweighter(n_bins=n_bins, n_neighs=0.0)
     reweighter.fit(original=source_log.reshape(-1, 1), target=target_log.reshape(-1, 1))
+    print(f"Reweighter edges: {np.power(10, reweighter.edges)}")
     weights = reweighter.predict_weights(source_log.reshape(-1, 1))
     return weights / weights.mean()  # Normalize weights
 
@@ -27,6 +28,49 @@ def kde_smooth_weights(source, target, bandwidth=0.2):
 
     weights = np.exp(log_target_density - log_source_density)
     return weights / np.mean(weights)  # Normalize weights
+
+def hybrid_weights(source, target, switch_value=3600, n_bins=400, bandwidth=0.2):
+    """ Hybrid reweighting: use BinsReweighter below switch_value, KDE above. """
+    
+    # Preprocessing: log scale to stabilize
+    source_log = np.log10(source.clip(min=1e-3))
+    target_log = np.log10(target.clip(min=1e-3))
+
+    # Split data based on switch_value
+    mask_low = source.flatten() < switch_value
+    mask_high = ~mask_low
+
+    weights = np.ones_like(source, dtype=float)
+
+    # 1. Use BinsReweighter for lower range
+    if np.any(mask_low):
+        reweighter = reweight.BinsReweighter(n_bins=n_bins, n_neighs=2.0)
+        reweighter.fit(
+            original=source_log[mask_low].reshape(-1, 1),
+            target=target_log[mask_low].reshape(-1, 1)
+        )
+        weights[mask_low] = reweighter.predict_weights(source_log[mask_low].reshape(-1, 1))
+
+    # 2. Use KDE for high range
+    if np.any(mask_high):
+        source_high = source[mask_high].reshape(-1, 1)
+        target_high = target.reshape(-1, 1)
+
+        kde_source = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(source_high)
+        kde_target = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(target_high)
+
+        log_source_density = kde_source.score_samples(source_high)
+        log_target_density = kde_target.score_samples(source_high)
+
+        kde_weights = np.exp(log_target_density - log_source_density)
+        kde_weights /= np.mean(kde_weights)
+
+        weights[mask_high] = kde_weights
+
+    # Final normalization
+    weights /= np.mean(weights)
+
+    return weights
 
 def process_h5_file(h5_file, data_source, dataset_weights=None, weight_start=0):
     """ Create or append datasets in an HDF5 file. """
@@ -73,6 +117,7 @@ def process_files(file_dir, out_dir, sig_tag, bkg_tag):
     train_bkg_pt = np.concatenate(train_bkg_pt)
     # bkg_weights = kde_smooth_weights(train_bkg_pt, train_sig_pt)
     bkg_weights = match_weights(train_bkg_pt, train_sig_pt)
+    # bkg_weights = hybrid_weights(train_bkg_pt, train_sig_pt)
 
     # Process background files
     print("Reweighting and saving background files...")
@@ -120,7 +165,7 @@ def process_files(file_dir, out_dir, sig_tag, bkg_tag):
 
 if __name__ == "__main__":    
     input_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_out"
-    output_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_train"
+    output_dir = "/AtlasDisk/user/duquebran/JetTagging/4-classes/data_train_new_reweight2"
     process_files(input_dir, output_dir, "higgs", "QCD")
-    process_files(input_dir, output_dir, "higgs", "top")
-    process_files(input_dir, output_dir, "higgs", "WZ")
+    # process_files(input_dir, output_dir, "higgs", "top")
+    # process_files(input_dir, output_dir, "higgs", "WZ")
